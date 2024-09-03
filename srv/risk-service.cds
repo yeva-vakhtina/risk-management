@@ -5,6 +5,8 @@ service RiskService {
     entity Risks       as projection on rm.Risks;
     annotate Risks with @odata.draft.enabled;
 
+    @readonly entity ListOfRisks as projection on Risks excluding { prio, descr, miti, impact, criticality, PrioCriticality };
+
     entity Mitigations as projection on rm.Mitigations;
     annotate Mitigations with @odata.draft.enabled;
 
