@@ -1,0 +1,5 @@
+ID;createdAt;createdBy;title;description;quantity
+30466921-7d57-4e76-b14c-e53fd97dcb11;2019-10-24;SYSTEM;Item-mini;Minimal quantity;1
+40466921-7d57-4e76-b14c-e53fd97dcb11;2019-11-24;SYSTEM;Item-small;Small quantity;30
+50466921-7d57-4e76-b14c-e53fd97dcb11;2019-12-24;SYSTEM;Item-medium;Average quantity;60
+60466921-7d57-4e76-b14c-e53fd97dcb11;2020-01-24;SYSTEM;Item-large;Exceeding quantity;101

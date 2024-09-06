@@ -14,7 +14,7 @@ entity Risks : cuid, managed {
         descr                    : String;
         miti                     : Association to Mitigations;
         impact                   : Integer;
-        // bp : Association to BusinessPartners;
+        bp : Association to BusinessPartners;
         virtual criticality      : Integer;
         virtual PrioCriticality : Integer;
 }
@@ -33,4 +33,19 @@ entity Priority : CodeList {
                     medium = 'M';
                     low    = 'L';
             };
+}
+
+entity Items : cuid, managed {
+        title                    : String(100);
+        description              : String;
+        quantity                 : Integer;
+}
+
+
+// using an external service from SAP S/4HANA Cloud
+using { API_BUSINESS_PARTNER as external } from '../srv/external/API_BUSINESS_PARTNER.csn';
+
+entity BusinessPartners as projection on external.A_BusinessPartner {
+   key BusinessPartner,
+   BusinessPartnerFullName as FullName,
 }
