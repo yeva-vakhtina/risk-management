@@ -1,0 +1,40 @@
+{
+  "xsappname": "risk-management",
+  "tenant-mode": "shared",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Administrator scope"
+    },
+    {
+      "name": "$XSAPPNAME.RiskViewer",
+      "description": "User scope"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "AdminRole",
+      "description": "Administrator Role",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ]
+    },
+    {
+      "name": "UserRole",
+      "description": "User Role",
+      "scope-references": [
+        "$XSAPPNAME.RiskViewer"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "redirect-uris": [
+      "https://oauth.pstmn.io/v1/callback",
+      "http://localhost:5000"
+    ],
+    "grant-types": [
+      "client_credentials",
+      "authorization_code"
+    ]
+  }
+}

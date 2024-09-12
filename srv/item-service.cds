@@ -7,4 +7,8 @@ service ItemService {
 
     function selectSpecificQuantity(quantity: Integer) returns Items;
     action createNewItem(title: String, description: String, quantity: Integer) returns Items;
+
+    function getRemoteData() returns String;
+    function getLocalData() returns String;
+    function getNorthData() returns String;
 }

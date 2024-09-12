@@ -7,6 +7,7 @@ module.exports = cds.service.impl(async function() {
 
     // Define constants for the Risk and BusinessPartner entities from the risk-service.cds file
     const { Risks, BusinessPartners } = this.entities;
+    const Northsrv = await cds.connect.to('Noirthwind');
 
     // This handler will be executed directly AFTER a READ operation on RISKS
     // With this we can loop through the received data set and manipulate the single risk entries
@@ -94,5 +95,12 @@ module.exports = cds.service.impl(async function() {
         }
 
         return risks;
+    });
+
+    this.on("getNorthData", async (req) => {
+        const response = await Northsrv.get('/Northwind/Northwind.svc/Customers');
+
+        console.log(response);
+        return response;
     });
 });
