@@ -1,0 +1,85 @@
+_schema-version: 3.3.0
+ID: risk-management
+description: Template for the Learning Journey Building side-by-side extensions on SAP BTP
+version: 3.0.0
+modules:
+  - name: risk-management-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: risk-management-auth
+      - name: risk-management-destination
+      - name: risk-management-db
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      readiness-health-check-http-endpoint: /health
+      readiness-health-check-type: http
+    build-parameters:
+      builder: npm
+  - name: risk-management
+    type: approuter.nodejs
+    path: app
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          name: srv-api
+          url: ~{srv-url}
+      - name: risk-management-auth
+      - name: risk-management-destination
+    parameters:
+      disk-quota: 256M
+      keep-existing-routes: true
+      memory: 256M
+  - name: risk-management-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: risk-management-db
+    parameters:
+      buildpack: nodejs_buildpack
+resources:
+  - name: risk-management-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        oauth2-configuration:
+          redirect-uris:
+            - https://205030a7trial-dev-risk-management.cfapps.us10-001.hana.ondemand.com
+        role-collections:
+          - description: Manage Risks
+            name: RiskManager-${org}-${space}
+            role-template-references:
+              - $XSAPPNAME.RiskManager
+          - description: View Risks
+            name: RiskViewer-${org}-${space}
+            role-template-references:
+              - $XSAPPNAME.RiskViewer
+        tenant-mode: dedicated
+        xsappname: risk-management-${org}-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: risk-management-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+  - name: risk-management-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

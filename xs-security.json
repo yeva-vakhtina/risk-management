@@ -1,36 +1,57 @@
 {
-  "xsappname": "risk-management",
-  "tenant-mode": "shared",
   "scopes": [
     {
-      "name": "$XSAPPNAME.Administrator",
-      "description": "Administrator scope"
+      "name": "$XSAPPNAME.RiskViewer",
+      "description": "RiskViewer"
     },
     {
-      "name": "$XSAPPNAME.RiskViewer",
-      "description": "User scope"
+      "name": "$XSAPPNAME.RiskManager",
+      "description": "RiskManager"
+    },
+    {
+      "name": "$XSAPPNAME.cds.ExtensionDeveloper",
+      "description": "Extend CAP applications via extension projects"
+    },
+    {
+      "name": "$XSAPPNAME.mtcallback",
+      "description": "Subscription via SaaS Registry",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+      ]
     }
   ],
+  "attributes": [],
   "role-templates": [
     {
-      "name": "AdminRole",
-      "description": "Administrator Role",
-      "scope-references": [
-        "$XSAPPNAME.Administrator"
-      ]
-    },
-    {
-      "name": "UserRole",
-      "description": "User Role",
+      "name": "RiskViewer",
+      "description": "Viwer of risks",
       "scope-references": [
         "$XSAPPNAME.RiskViewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "RiskManager",
+      "description": "Manager of risks",
+      "scope-references": [
+        "$XSAPPNAME.RiskManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "ExtensionDeveloper",
+      "description": "Extension development including UIFlex extensibility",
+      "scope-references": [
+        "$XSAPPNAME.cds.ExtensionDeveloper"
       ]
     }
+  ],
+  "authorities": [
+    "$XSAPPNAME.cds.ExtensionDeveloper"
   ],
   "oauth2-configuration": {
     "redirect-uris": [
-      "https://oauth.pstmn.io/v1/callback",
-      "http://localhost:5000"
+      "https://205030a7trial-dev-risk-management.cfapps.us10-001.hana.ondemand.com"
     ],
     "grant-types": [
       "client_credentials",
